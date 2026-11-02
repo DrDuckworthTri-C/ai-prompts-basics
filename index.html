@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Prompts: The Basics</title>
+<meta name="description" content="A free two-session beginner workshop on writing clear prompts for AI assistants, built from free resources by Microsoft, Google, OpenAI, and Anthropic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #0F4C4A;
+    --teal-deep: #093634;
+    --cream: #FFF8EE;
+    --sand: #F2E7D3;
+    --coral: #F26B4E;
+    --coral-deep: #C84B31;
+    --text: #1E2A2A;
+    --muted: #5C6B6A;
+    --line: #D9CDB6;
+    --maxw: 920px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--cream); color: var(--text); font-family: "Public Sans", "Segoe UI", system-ui, sans-serif; font-size: 1.1rem; line-height: 1.65; }
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 700; line-height: 1.1; margin: 0 0 .45em; }
+  h1 { font-size: clamp(2.6rem, 6.5vw, 4.4rem); font-weight: 500; letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 500; }
+  h3 { font-size: 1.3rem; font-weight: 700; }
+  p { margin: 0 0 1em; }
+  a { color: var(--teal); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+  a:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* top bar */
+  .bar { background: var(--teal-deep); color: #fff; font-size: .95rem; }
+  .bar .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; }
+  .bar b { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.05rem; }
+  .bar nav a { color: #fff; margin-left: 18px; text-decoration: none; opacity: .9; }
+  .bar nav a:hover { text-decoration: underline; opacity: 1; }
+
+  /* hero */
+  .hero { background: var(--teal); color: #fff; padding: 64px 0 72px; }
+  .hero .grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; }
+  .hero .lede { font-size: 1.2rem; max-width: 30em; opacity: .92; }
+  .hero .btn { background: var(--coral); color: #fff; }
+  .hero .btn:hover { background: var(--coral-deep); }
+  .hero .sub { color: #fff; font-weight: 600; margin-left: 18px; }
+
+  /* chat mock */
+  .chat { display: grid; gap: 14px; }
+  .msg { max-width: 92%; padding: 14px 18px; border-radius: 18px; font-size: 1rem; line-height: 1.55; box-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .msg.user { background: var(--cream); color: var(--text); justify-self: end; border-bottom-right-radius: 4px; }
+  .msg.ai { background: var(--teal-deep); color: #fff; justify-self: start; border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,.18); }
+  .msg .who { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .02em; opacity: .7; margin-bottom: 4px; }
+  .tag { display: inline-block; background: var(--coral); color: #fff; font-weight: 700; font-size: .72rem; padding: 1px 7px; border-radius: 999px; margin-right: 5px; vertical-align: 1px; }
+  .msg.ai em { font-style: italic; opacity: .85; }
+
+  .btn { display: inline-block; font-weight: 700; text-decoration: none; padding: 14px 22px; border-radius: 999px; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 14px 0; align-items: center; margin-top: 28px; }
+
+  section { padding: 56px 0 24px; }
+  section.sand { background: var(--sand); }
+  .eyebrow-free { display: none; }
+
+  /* dates */
+  .dates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 0 0 8px; }
+  .date { background: #fff; border-left: 6px solid var(--coral); padding: 16px 20px; border-radius: 6px; }
+  .date .when { font-weight: 700; color: var(--teal); }
+  .date .what { font-family: "Fraunces", serif; font-size: 1.35rem; font-weight: 700; margin: 2px 0 4px; }
+  .date .topics { color: var(--muted); font-size: 1rem; }
+
+  /* steps */
+  ol.steps { padding-left: 0; list-style: none; counter-reset: s; margin: 0; display: grid; gap: 14px; }
+  ol.steps li { counter-increment: s; background: #fff; border-radius: 10px; padding: 16px 18px 16px 70px; position: relative; }
+  ol.steps li::before { content: counter(s); position: absolute; left: 18px; top: 16px; width: 36px; height: 36px; border-radius: 50%; background: var(--teal); color: #fff; font-family: "Fraunces", serif; font-weight: 700; font-size: 1.15rem; display: grid; place-items: center; }
+
+  /* formula strip */
+  .formula { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 2px solid var(--teal); border-radius: 12px; overflow: hidden; margin: 8px 0 18px; background: #fff; }
+  .formula div { padding: 16px 18px; border-right: 2px solid var(--teal); }
+  .formula div:last-child { border-right: 0; }
+  .formula b { display: block; font-family: "Fraunces", serif; font-size: 1.3rem; color: var(--teal); margin-bottom: 2px; }
+  .formula span { color: var(--muted); font-size: .98rem; }
+
+  /* timeline */
+  .timeline { position: relative; padding-left: 34px; margin: 8px 0 0; }
+  .timeline::before { content: ""; position: absolute; left: 10px; top: 8px; bottom: 8px; width: 3px; background: var(--teal); border-radius: 2px; }
+  .timeline h3 { margin: 26px 0 10px; color: var(--teal); }
+  .timeline h3:first-child { margin-top: 0; }
+  .tl { position: relative; margin-bottom: 14px; background: #fff; border-radius: 10px; padding: 14px 18px; }
+  .tl::before { content: ""; position: absolute; left: -30px; top: 20px; width: 14px; height: 14px; border-radius: 50%; background: var(--coral); border: 3px solid var(--cream); }
+  .tl b { display: block; }
+  .tl span { color: var(--muted); font-size: 1rem; }
+
+  ul.plain { padding-left: 1.2em; margin: 0 0 1em; }
+  ul.plain li { margin-bottom: 8px; }
+
+  /* downloads */
+  .downloads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .dl { background: #fff; border-radius: 12px; padding: 18px; text-decoration: none; color: var(--text); border: 2px solid transparent; display: block; }
+  .dl:hover { border-color: var(--teal); }
+  .dl .ext { display: inline-block; background: var(--coral); color: #fff; font-weight: 700; font-size: .75rem; padding: 3px 9px; border-radius: 999px; margin-bottom: 10px; }
+  .dl b { display: block; font-family: "Fraunces", serif; font-size: 1.2rem; margin-bottom: 4px; }
+  .dl span { color: var(--muted); font-size: .98rem; }
+
+  /* resources by publisher */
+  .pubs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .pub { background: #fff; border-radius: 12px; padding: 18px; }
+  .pub h3 { color: var(--teal); font-size: 1.15rem; margin-bottom: 8px; }
+  .pub ul { padding-left: 1.1em; margin: 0; }
+  .pub li { margin-bottom: 7px; font-size: 1rem; }
+
+  footer { background: var(--teal-deep); color: #fff; padding: 32px 0 44px; font-size: .98rem; margin-top: 40px; }
+  footer a { color: #fff; }
+
+  @media (max-width: 760px) {
+    .hero .grid { grid-template-columns: 1fr; gap: 28px; }
+    .dates, .downloads, .pubs { grid-template-columns: 1fr; }
+    .formula { grid-template-columns: 1fr 1fr; }
+    .formula div:nth-child(2) { border-right: 0; }
+    .formula div:nth-child(1), .formula div:nth-child(2) { border-bottom: 2px solid var(--teal); }
+    .bar nav { display: none; }
+    .hero { padding: 44px 0 52px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="wrap">
+    <b>AI Prompts: The Basics</b>
+    <nav aria-label="Page sections">
+      <a href="#before">Before class</a>
+      <a href="#formula">The formula</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#downloads">Downloads</a>
+      <a href="#resources">Resources</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap grid">
+    <div>
+      <h1>Ask better. Get better answers.</h1>
+      <p class="lede">A free two-session workshop for beginners. Learn one simple formula for talking to AI assistants, practice it on real business tasks, and leave with a Microsoft Learn trophy and your own prompt library.</p>
+      <div class="btn-row">
+        <a class="btn" href="https://github.com/DrDuckworthTri-C/ai-prompts-basics/raw/main/student/Student_Workbook.docx">Download the student workbook</a>
+        <a class="sub" href="#before">What to do before class</a>
+      </div>
+    </div>
+    <div class="chat" aria-label="Example prompt and reply">
+      <div class="msg user">
+        <span class="who">You</span>
+        <span class="tag">Goal</span>Write a thank-you note.
+        <span class="tag">Context</span>For a volunteer who restocked our food pantry on Saturday.
+        <span class="tag">Source</span>Her name is Maria. She trained two new volunteers.
+        <span class="tag">Expectations</span>Warm, under 120 words, ready to print on a card.
+      </div>
+      <div class="msg ai">
+        <span class="who">AI assistant</span>
+        Dear Maria, thank you for giving us your Saturday. The canned goods section has never looked better, and the two volunteers you trained are already asking when they can come back. <em>(continues, 94 words)</em>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="dates">
+    <div class="wrap">
+      <h2>Two sessions, three hours each</h2>
+      <div class="dates">
+        <div class="date">
+          <div class="when">Session 1. Tuesday, November 10, 2026</div>
+          <div class="what">Foundations and the prompt formula</div>
+          <div class="topics">What AI can and cannot do, the four-part prompt, prompts for writing</div>
+        </div>
+        <div class="date">
+          <div class="when">Session 2. Thursday, November 12, 2026</div>
+          <div class="what">Applying prompts, using AI responsibly</div>
+          <div class="topics">Planning, data and documents, judgment, and your trophy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="before" class="sand">
+    <div class="wrap">
+      <h2>Before the first session</h2>
+      <p>Three things, about ten minutes, so you can start working the moment class begins.</p>
+      <ol class="steps">
+        <li><b>Sign in to Microsoft Copilot.</b> Go to <a href="https://copilot.microsoft.com/">copilot.microsoft.com</a> with a free Microsoft account. If you already use ChatGPT, Gemini, or Claude, you may use it for every exercise instead.</li>
+        <li><b>Sign in to Microsoft Learn.</b> Open <a href="https://learn.microsoft.com/">learn.microsoft.com</a> with the same account. You will use it in the last lesson to earn your trophy.</li>
+        <li><b>Download the workbook and the prompt library template.</b> Both are in Downloads below. Bring a laptop if the session is not in a computer lab, and bring one real task you would like help with.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="formula">
+    <div class="wrap">
+      <h2>The one formula you will use all day</h2>
+      <p>Every good prompt answers up to four questions. You only need the first one to start.</p>
+      <div class="formula">
+        <div><b>Goal</b><span>What should the AI do?</span></div>
+        <div><b>Context</b><span>Why, and for whom?</span></div>
+        <div><b>Source</b><span>What should it use?</span></div>
+        <div><b>Expectations</b><span>How should the answer look?</span></div>
+      </div>
+      <p style="color: var(--muted); font-size: 1rem;">Google teaches the same idea as Persona, Task, Context, Format. You will see both in class.</p>
+    </div>
+  </section>
+
+  <section id="schedule" class="sand">
+    <div class="wrap">
+      <h2>What we cover</h2>
+      <div class="timeline">
+        <h3>Session 1: Tuesday, November 10</h3>
+        <div class="tl"><b>Lesson 1: What AI can and cannot do</b><span>How an assistant works, where it fails, your first conversation.</span></div>
+        <div class="tl"><b>Lesson 2: The four-part prompt</b><span>Goal, Context, Source, Expectations. Fix five weak prompts and watch the answers improve.</span></div>
+        <div class="tl"><b>Lesson 3: Prompts for writing</b><span>Draft email, change tone and length, summarize a document, refine with follow-ups.</span></div>
+        <h3>Session 2: Thursday, November 12</h3>
+        <div class="tl"><b>Lesson 4: Prompts for thinking and planning</b><span>Brainstorm, narrow, let the AI interview you, build a plan table.</span></div>
+        <div class="tl"><b>Lesson 5: Prompts with data and documents</b><span>Paste a table, attach a file, check the arithmetic yourself, the privacy rule.</span></div>
+        <div class="tl"><b>Lesson 6: Using AI responsibly</b><span>Catch a hallucination, the five judgment rules, earn the Work smarter with AI trophy.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="outcomes">
+    <div class="wrap">
+      <h2>What you will leave with</h2>
+      <ul class="plain">
+        <li>A personal prompt library of ten reusable prompts</li>
+        <li>Five weak prompts you rewrote, with before and after answers</li>
+        <li>A project plan table and a data summary you produced with AI and checked yourself</li>
+        <li>The <a href="https://learn.microsoft.com/en-us/training/paths/work-smarter-with-ai/">Work smarter with AI</a> trophy on your Microsoft Learn profile</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="downloads" class="sand">
+    <div class="wrap">
+      <h2>Downloads</h2>
+      <div class="downloads">
+        <a class="dl" href="https://github.com/DrDuckworthTri-C/ai-prompts-basics/raw/main/student/Student_Workbook.docx"><span class="ext">DOCX</span><b>Student Workbook</b><span>Six lessons with steps, copy-ready prompts, labs, and self-checks.</span></a>
+        <a class="dl" href="https://github.com/DrDuckworthTri-C/ai-prompts-basics/raw/main/student/Prompt_Library_Template.docx"><span class="ext">DOCX</span><b>Prompt Library Template</b><span>Ten entries to fill in as you go. The thing you keep using after class.</span></a>
+        <a class="dl" href="https://github.com/DrDuckworthTri-C/ai-prompts-basics/raw/main/student/Sample_Data_Expenses.xlsx"><span class="ext">XLSX</span><b>Sample Data</b><span>Ten rows of expenses for Lesson 5.</span></a>
+      </div>
+      <p style="margin-top:18px;"><a href="https://github.com/DrDuckworthTri-C/ai-prompts-basics/raw/main/student/Course_Calendar.docx">Download the course calendar</a> for the full minute-by-minute agenda and key dates.</p>
+    </div>
+  </section>
+
+  <section id="resources">
+    <div class="wrap">
+      <h2>Free resources used in this course</h2>
+      <p>Everything in the workshop is free. These are the pages the lessons link to, grouped by who publishes them.</p>
+      <div class="pubs">
+        <div class="pub"><h3>Microsoft</h3><ul>
+          <li><a href="https://learn.microsoft.com/en-us/training/paths/work-smarter-with-ai/">Work smarter with AI</a> (the trophy path)</li>
+          <li><a href="https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/">Introduction to generative AI and agents</a></li>
+          <li><a href="https://support.microsoft.com/en-us/microsoft-365-copilot/get-started-writing-prompts-in-microsoft-365-copilot">Get started writing prompts</a></li>
+          <li><a href="https://support.microsoft.com/en-us/microsoft-365-copilot/write-a-great-prompt-in-microsoft-365-copilot">Write a great prompt</a></li>
+          <li><a href="https://support.microsoft.com/en-us/microsoft-365-copilot/">Copilot help and learning</a></li>
+          <li><a href="https://copilot.microsoft.com/">Microsoft Copilot</a> (practice tool)</li>
+        </ul></div>
+        <div class="pub"><h3>Google and OpenAI</h3><ul>
+          <li><a href="https://workspace.google.com/resources/ai/writing-effective-prompts/">Google: Prompting guide 101</a></li>
+          <li><a href="https://academy.openai.com/public/videos/introduction-to-prompt-engineering-2025-02-13">OpenAI Academy: Introduction to Prompt Engineering</a> (9-minute video)</li>
+        </ul></div>
+        <div class="pub"><h3>Anthropic and Learn Prompting</h3><ul>
+          <li><a href="https://anthropic.skilljar.com/claude-101">Claude 101</a> (free, with certificate)</li>
+          <li><a href="https://learnprompting.org/docs/introduction">Learn Prompting: introductory course</a></li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Taught by Dr. Carelicha Duckworth, PhD. Course materials are shared under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> license. Linked training content belongs to its publishers. Links verified November 2, 2026.</p>
+  </div>
+</footer>
+
+</body>
+</html>
